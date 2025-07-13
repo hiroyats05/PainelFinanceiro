@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Painel Financeiro{% endblock %}
+
+{% block content %}
+
+<h1>Painel Financeiro</h1>
+
+<p><strong>Saldo atual:</strong>
+  <span class="{{ 'positivo' if saldo >= 0 else 'negativo' }}">
+    R$ {{ '%.2f' | format(saldo) }}
+  </span>
+</p>
+
+<p>💵 <strong>1 USD</strong> = R$ {{ '%.2f' | format(cotacao_usd) }}</p>
+<p>₿ <strong>1 BTC</strong> = R$ {{ '%.2f' | format(cotacao_btc) }}</p>
+
+<hr>
+
+<h2>Transações</h2>
+
+{% if transacoes %}
+<table>
+  <thead>
+    <tr>
+      <th>Tipo</th>
+      <th>Valor</th>
+      <th>Descrição</th>
+      <th>Data</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in transacoes %}
+    <tr>
+      <td>{{ t[0] }}</td>
+      <td>R$ {{ '%.2f' | format(t[1]) }}</td>
+      <td>{{ t[2] }}</td>
+      <td>{{ t[3] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Nenhuma transação registrada ainda.</p>
+{% endif %}
+
+<a href="/registrar" class="button">Registrar nova transação</a>
+
+{% endblock %}
