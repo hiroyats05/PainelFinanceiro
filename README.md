@@ -4,8 +4,7 @@ Um painel simples feito com **Python + Flask** para registrar transações finan
 
 ![Python](https://img.shields.io/badge/Feito%20com-Python%203.11-blue?style=flat&logo=python)  
 ![Flask](https://img.shields.io/badge/Flask-2.3.3-black)  
-![SQLite](https://img.shields.io/badge/SQLite-Banco%20de%20dados-lightgrey)  
-![API](https://img.shields.io/badge/Cota%C3%A7%C3%A3o-via%20API-orange)
+![SQLite](https://img.shields.io/badge/SQLite-Banco%20de%20dados-lightgrey)  ![API](https://img.shields.io/badge/Cota%C3%A7%C3%A3o-via%20API-orange)
 
 ---
 
