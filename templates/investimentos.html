@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Comparar Ações{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">📊 Comparativo de Ações</h2>
+
+  <div class="mb-3">
+    <label for="inputAcao" class="form-label">Digite o ticker da ação:</label>
+    <input type="text" id="inputAcao" class="form-control" placeholder="Ex: PETR4.SA, VALE3.SA">
+    <button class="btn btn-primary mt-2" onclick="adicionarAcao()">Adicionar</button>
+  </div>
+
+  <div id="lista-acoes" class="mb-3">
+    <!-- Ações adicionadas serão listadas aqui -->
+  </div>
+
+  <button class="btn btn-success mb-4" onclick="compararAcoes()">📈 Comparar</button>
+
+  <div>
+    <canvas id="graficoComparativo"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let acoesSelecionadas = [];
+
+  function adicionarAcao() {
+    const input = document.getElementById('inputAcao');
+    const ticker = input.value.trim().toUpperCase();
+    if (ticker && !acoesSelecionadas.includes(ticker)) {
+      acoesSelecionadas.push(ticker);
+      atualizarListaAcoes();
+    }
+    input.value = '';
+  }
+
+  function removerAcao(ticker) {
+    acoesSelecionadas = acoesSelecionadas.filter(t => t !== ticker);
+    atualizarListaAcoes();
+  }
+
+  function atualizarListaAcoes() {
+    const lista = document.getElementById('lista-acoes');
+    lista.innerHTML = '';
+    acoesSelecionadas.forEach(ticker => {
+      const item = document.createElement('div');
+      item.className = "badge bg-secondary me-2 mb-2";
+      item.innerHTML = `${ticker} <span onclick="removerAcao('${ticker}')" style="cursor:pointer; color:red;">✖</span>`;
+      lista.appendChild(item);
+    });
+  }
+
+  function compararAcoes() {
+    if (acoesSelecionadas.length === 0) return;
+
+    fetch(`/api/acoes_comparadas?tickers=${acoesSelecionadas.join(',')}`)
+      .then(res => res.json())
+      .then(dados => {
+        const ctx = document.getElementById('graficoComparativo').getContext('2d');
+        const cores = ['#6b46c1', '#4dc9f6', '#f67019', '#f53794', '#537bc4', '#acc236', '#166a8f', '#00a950'];
+        const datasets = Object.keys(dados.series).map((ticker, index) => ({
+          label: ticker,
+          data: dados.series[ticker],
+          borderColor: cores[index % cores.length],
+          fill: false,
+        }));
+
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: dados.datas,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                labels: { color: '#fff' }
+              }
+            },
+            scales: {
+              x: { ticks: { color: '#ccc' } },
+              y: { ticks: { color: '#ccc' } }
+            }
+          }
+        });
+      });
+  }
+</script>
+{% endblock %}

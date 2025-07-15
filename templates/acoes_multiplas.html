@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Dashboard Ações</h2>
+
+    <div class="mb-3">
+        <input type="text" id="inputTicker" placeholder="Digite o ticker (ex: PETR4.SA)" class="form-control" style="max-width: 300px; display: inline-block;">
+        <button id="btnAdicionar" class="btn btn-primary">Adicionar Ação</button>
+        <small class="text-muted d-block mt-1">Use formato com .SA no final para ações B3</small>
+    </div>
+
+    <div id="container-graficos" style="display: flex; flex-wrap: wrap; gap: 20px;">
+        <!-- Os gráficos serão inseridos aqui -->
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const container = document.getElementById('container-graficos');
+const tickersAtivos = new Set();
+
+function gerarCorAleatoria() {
+    const r = Math.floor(Math.random() * 155) + 50;
+    const g = Math.floor(Math.random() * 155) + 50;
+    const b = Math.floor(Math.random() * 155) + 50;
+    return `rgb(${r},${g},${b})`;
+}
+
+function criarGrafico(ticker, datas, precos) {
+    if (tickersAtivos.has(ticker)) {
+        alert(`O gráfico para ${ticker} já está exibido.`);
+        return;
+    }
+    tickersAtivos.add(ticker);
+
+    const divGrafico = document.createElement('div');
+    divGrafico.style.width = '45%';  
+    divGrafico.style.minWidth = '300px';
+    divGrafico.style.border = '1px solid #ddd';
+    divGrafico.style.padding = '10px';
+    divGrafico.style.borderRadius = '8px';
+    divGrafico.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+    divGrafico.style.backgroundColor = '#fff';
+    divGrafico.style.marginBottom = '20px';
+
+    const titulo = document.createElement('h4');
+    titulo.textContent = ticker;
+    titulo.style.textAlign = 'center';
+
+    // Botão remover gráfico
+    const btnRemover = document.createElement('button');
+    btnRemover.textContent = '×';
+    btnRemover.style.float = 'right';
+    btnRemover.style.fontSize = '18px';
+    btnRemover.style.border = 'none';
+    btnRemover.style.background = 'transparent';
+    btnRemover.style.cursor = 'pointer';
+    btnRemover.title = 'Remover gráfico';
+    btnRemover.onclick = () => {
+        container.removeChild(divGrafico);
+        tickersAtivos.delete(ticker);
+    };
+
+    titulo.appendChild(btnRemover);
+    divGrafico.appendChild(titulo);
+
+    const canvas = document.createElement('canvas');
+    canvas.id = `grafico_${ticker}`;
+    canvas.height = 200;
+    divGrafico.appendChild(canvas);
+
+    container.appendChild(divGrafico);
+
+    const ctx = canvas.getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: datas,
+            datasets: [{
+                label: ticker,
+                data: precos,
+                borderColor: gerarCorAleatoria(),
+                fill: false,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: false }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+}
+
+function carregarAcoesIniciais() {
+    fetch('/api/acoes_separadas')
+    .then(res => res.json())
+    .then(data => {
+        for (const ticker in data) {
+            criarGrafico(ticker, data[ticker].datas, data[ticker].precos);
+        }
+    });
+}
+
+document.getElementById('btnAdicionar').onclick = () => {
+    const tickerInput = document.getElementById('inputTicker');
+    let ticker = tickerInput.value.trim().toUpperCase();
+    if (!ticker) {
+        alert('Digite um ticker válido!');
+        return;
+    }
+
+    // Busca dados da ação via API
+    fetch(`/api/acoes_separadas?tickers=${ticker}`)
+    .then(res => res.json())
+    .then(data => {
+        if (Object.keys(data).length === 0) {
+            alert(`Não foi possível encontrar dados para ${ticker}`);
+            return;
+        }
+        criarGrafico(ticker, data[ticker].datas, data[ticker].precos);
+        tickerInput.value = '';
+    })
+    .catch(() => alert('Erro ao buscar dados da ação.'));
+};
+
+window.onload = carregarAcoesIniciais;
+</script>
+{% endblock %}

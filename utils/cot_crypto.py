@@ -2,7 +2,10 @@ import requests
 
 def obter_cotacao_btc():
     url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl"
-    resposta = requests.get(url)
-    if resposta.status_code == 200:
-        return resposta.json()['bitcoin']['brl']
-    return None    
+    try:
+        resposta = requests.get(url, timeout=5)
+        if resposta.status_code == 200:
+            return float(resposta.json()['bitcoin']['brl'])
+    except Exception:
+        pass
+    return 0.0
