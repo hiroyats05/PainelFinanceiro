@@ -11,7 +11,7 @@ Um painel moderno feito com **Python + Flask**, para controle financeiro pessoal
 
 ## 🖼️ Interface
 
-Dashboard com tema escuro e roxo inspirado em plataformas como XP Investimentos:
+Dashboard com tema escuro e roxo inspirado em plataformas como XP Investimentos, Rico e etc:
 
 - ✅ Interface moderna e responsiva
 - ✅ Cartões informativos com saldo, dólar e bitcoin
