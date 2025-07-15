@@ -1,8 +1,22 @@
-# 💰 Painel Financeiro em Flask
+# 💰 Painel Financeiro com Dashboard de Ações (Flask)
 
-Um painel simples feito com **Python + Flask** para registrar transações financeiras, visualizar saldo e consultar cotações de USD e Bitcoin em tempo real.
+Um painel moderno feito com **Python + Flask**, para controle financeiro pessoal e visualização de ações em tempo real com gráficos comparativos.
 
-![Python](https://img.shields.io/badge/Feito%20com-Python%203.11-blue?style=flat&logo=python)  ![Flask](https://img.shields.io/badge/Flask-2.3.3-black)  ![SQLite](https://img.shields.io/badge/SQLite-Banco%20de%20dados-lightgrey)  ![API](https://img.shields.io/badge/Cota%C3%A7%C3%A3o-via%20API-orange)
+![Python](https://img.shields.io/badge/Feito%20com-Python%203.11-blue?style=flat&logo=python)
+![Flask](https://img.shields.io/badge/Flask-2.3.3-black)
+![SQLite](https://img.shields.io/badge/SQLite-Banco%20de%20dados-lightgrey)
+![API](https://img.shields.io/badge/Cota%C3%A7%C3%A3o-via%20API-orange)
+
+---
+
+## 🖼️ Interface
+
+Dashboard com tema escuro e roxo inspirado em plataformas como XP Investimentos:
+
+- ✅ Interface moderna e responsiva
+- ✅ Cartões informativos com saldo, dólar e bitcoin
+- ✅ Tabelas com transações
+- ✅ Gráficos interativos para ações e comparações
 
 ---
 
@@ -12,38 +26,37 @@ Um painel simples feito com **Python + Flask** para registrar transações finan
 - Ambiente virtual (recomendado)
 - Acesso à internet para consumir cotações via API
 
-### Pacotes usados:
+### 🧪 Principais pacotes:
 
-- flask==2.3.3  
-- requests==2.31.0  
+- `flask==2.3.3`
+- `requests==2.31.0`
+- `yfinance==0.2.37`
 
 ---
 
 ## 🛠️ Como instalar
 
-1. Clone este projeto:
+1. Clone este repositório:
 
 ```bash
 git clone https://github.com/hiroyats05/painel-financeiro-flask.git
 cd painel-financeiro-flask
 ```
 
-2. Crie um ambiente virtual:
+2. Crie e ative um ambiente virtual:
 
 ```bash
 python -m venv venv
+# Ativação:
+# Windows
+venv\Scripts\activate
+# macOS/Linux
+source venv/bin/activate
 ```
 
-3. Ative o ambiente virtual:
+3. Instale as dependências:
 
 ```bash
-.venv\Scripts\Activate        # Windows
-source venv/bin/activate      # Linux/macOS
-```
-
-4. Instale as dependências:
-
-```powershell
 pip install -r requirements.txt
 ```
 
@@ -51,13 +64,13 @@ pip install -r requirements.txt
 
 ## 🚀 Como usar
 
-1. Inicie o servidor:
+Inicie o servidor local:
 
-```powershell
+```bash
 python app.py
 ```
 
-2. Acesse no navegador:
+Acesse no navegador:
 
 ```
 http://127.0.0.1:5000/
@@ -67,30 +80,36 @@ http://127.0.0.1:5000/
 
 ## ✅ Funcionalidades
 
-- Registro de transações (entrada e saída)  
-- Cálculo automático do saldo  
-- Visualização de transações em tabela  
-- Cotações atualizadas de USD e BTC  
-- Interface limpa com HTML + CSS puro  
-- Salário com cálculo automático de imposto  
-- Responsivo e simples de usar  
+- 💳 **Controle financeiro**: registre receitas e despesas
+- 💰 **Saldo automático**
+- 🌐 **Cotação em tempo real** de dólar (USD) e bitcoin (BTC)
+- 📈 **Gráficos de ações** individuais
+- 📊 **Comparação entre ações** com base em percentual
+- 🔍 **Busca de ações específicas**
+
+---
+
+## 📊 Ações suportadas
+
+- Tickers da B3 como `PETR4.SA`, `VALE3.SA`, `ITUB4.SA`
+- Comparação lado a lado com histórico de 30 dias
+- Visualização separada com gráficos individuais
+- Filtro por nome, seleção dinâmica e adição manual
 
 ---
 
 ## 💡 Exemplo de uso
 
-Você pode registrar entradas (salário, vendas) ou saídas (compras, contas) com data, descrição e valor. O sistema calcula automaticamente o saldo e mostra o salário líquido com desconto de impostos.
+1. Registre uma nova entrada: "Salário", R$ 5.000
+2. Registre uma saída: "Cartão de Crédito", R$ 2.500
+3. Veja o saldo atualizado no topo
+4. Navegue até **Ações** e visualize os gráficos interativos com histórico
+5. Use a busca para comparar `PETR4.SA` com `VALE3.SA` e `ITUB4.SA`
 
 ---
 
-## 👨‍💻 Autor
+## 🧑‍💻 Autor
 
-Criado por: Hiroshi Yatabe  
-GitHub: https://github.com/hiroyats05  
-Finalidade: Aprendizado com Flask e integração de APIs.
-
----
-
-## 📝 Licença
-
-Este projeto é livre para uso pessoal, educacional e não comercial.
+Desenvolvido por: **Hiroshi Yatabe**  
+GitHub: [@hiroyats05](https://github.com/hiroyats05)  
+Finalidade: Aprendizado e aplicação prática com Flask e APIs .
